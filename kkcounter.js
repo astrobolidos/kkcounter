@@ -49,13 +49,13 @@ if (Meteor.isClient) {
 
 		if(!this.drawGraph) {
 			this.drawGraph = Deps.autorun(function(){
-				console.log('Deps.autorun');
+				console.log('Deps.autorun: ' +  );
 
 				var info = DailyCalories.find({}, {sort: {date: -1}}).fetch();
 			
 				if(info.length > 0) {
 					svg.selectAll('rect')
-						.data(info, function(i) { 
+						.data(info, function(i) {
 							return i.calories; 
 						})
 						.enter()
@@ -64,7 +64,7 @@ if (Meteor.isClient) {
 							return i * (w / info.length); //Bar width of 20 plus 1 for padding
 						})
 						.attr("y", function(d) {
-							return h - (d.calories/10); //Height minus data value
+							return h - (d.calories / 10); //Height minus data value
 						})
 						.attr("width", w / info.length - barPadding)
 						.attr("height", function(d) {
@@ -72,9 +72,6 @@ if (Meteor.isClient) {
 						})	
 						.attr("fill", 'teal');
 				}
-
-
-
 			});	
 		}
 	};
