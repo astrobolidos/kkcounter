@@ -21,11 +21,6 @@
     {{#each dailyCalories }}
         {{date}} - 
         <input class="calories" type="text" placeholder="How much?" value="{{calories}}"/>	
-      
-        <!--<div class="span8 progress {{progressStyle calories}}">
-          <div class="bar" style="width: {{percent calories}}%">
-          </div>
-        </div>-->
         </br>
     {{/each}}
     
@@ -39,6 +34,8 @@
 
 <template name="graphs">
   welcome to graphs template
-  <div id="bar">&nbsp;</div>
+  <div id="bar">
+    {{#constant}} {{/constant}}
+  </div>
   
 </template>
