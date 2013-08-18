@@ -1,0 +1,44 @@
+<head>
+  <title>kkcounter</title>
+</head>
+
+<body>
+  <div class="container">
+    <div class="row-fluid">
+      <div class="span6">
+      <!--Sidebar content-->
+        {{>dailyReport }}
+      </div>
+      <div class="span4 well">
+        {{>graphs}}
+      </div>
+    </div>
+  </div>
+</body>
+
+<template name="dailyReport">
+  <h1>You've eaten:</h1>
+    {{#each dailyCalories }}
+        {{date}} - 
+        <input class="calories" type="text" placeholder="How much?" value="{{calories}}"/>	
+      
+        <!--<div class="span8 progress {{progressStyle calories}}">
+          <div class="bar" style="width: {{percent calories}}%">
+          </div>
+        </div>-->
+        </br>
+    {{/each}}
+    
+	<p>{{#unless dailyCalories}} 
+	bla
+	{{/unless}}	
+	</p>
+  
+  <input id="add" type="button" value="Add" />
+</template>
+
+<template name="graphs">
+  welcome to graphs template
+  <div id="bar">&nbsp;</div>
+  
+</template>
