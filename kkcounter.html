@@ -34,8 +34,11 @@
 
 <template name="graphs">
   welcome to graphs template
-  <div id="bar">
-    
-  </div>
+    {{#constant}}
+      <svg width="500" height="200">
+        <g class="bars"></g>
+        <g class="labels"></g>
+      </svg>
+    {{/constant}}
   
 </template>

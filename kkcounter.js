@@ -31,47 +31,36 @@ if (Meteor.isClient) {
 	});
 
 	Template.graphs.destroyed = function() {
+		console.log('graphs.destroyed: ' + this.drawGraph);
 		if(this.drawGraph) this.drawGraph.stop();
 	};
 
 	Template.graphs.rendered = function() {
-		console.log('graphs.rendered()');
-		
-		this.node = this.find('#bar');
-		var w = 500;
-		var h = 200;
-		var barPadding = 1;
+		var self = this;
+		self.node = self.find("svg");
 
-		var svg = d3.select(this.node)
-			.append("svg")
-			.attr("width", w)
-			.attr('height', h);
-
-		if(!this.drawGraph) {
-			this.drawGraph = Deps.autorun(function(){
-				console.log('Deps.autorun: ' +  );
-
+		if(!self.drawGraph) {
+			self.drawGraph = Deps.autorun(function(){
 				var info = DailyCalories.find({}, {sort: {date: -1}}).fetch();
-			
-				if(info.length > 0) {
-					svg.selectAll('rect')
-						.data(info, function(i) {
-							return i.calories; 
-						})
-						.enter()
-						.append("rect")
-						.attr("x", function(d, i) {
-							return i * (w / info.length); //Bar width of 20 plus 1 for padding
-						})
-						.attr("y", function(d) {
-							return h - (d.calories / 10); //Height minus data value
-						})
-						.attr("width", w / info.length - barPadding)
-						.attr("height", function(d) {
-							return d.calories / 10;
-						})	
-						.attr("fill", 'teal');
+				var barPadding = 1;
+				var w = 500;
+				var h = 200;
+				
+				var updateBar = function(bar) {
+					bar.attr("id", function (d) { return d._id; })
+					.attr("x", function(d, i) { return i * (w / info.length); })//Bar width of 20 plus 1 for padding
+					.attr("y", function(d) { return h - (d.calories / 10); }) //Height minus data value
+					.attr("width", w / info.length - barPadding)
+					.attr("height", function(d) { return d.calories / 10; })	
+					.attr("fill", 'teal');					
 				}
+
+				var bars =d3.select(self.node).select('.bars').selectAll('rect')
+					.data(info, function(i) { return i._id; });
+					
+				updateBar(bars.enter().append('rect'));
+				updateBar(bars.transition().duration(250).ease("cubic-out"));
+				bars.exit().remove();
 			});	
 		}
 	};
