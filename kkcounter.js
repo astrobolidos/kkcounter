@@ -41,9 +41,9 @@ if (Meteor.isClient) {
 
 		if(!self.drawGraph) {
 			self.drawGraph = Deps.autorun(function(){
-				var info = DailyCalories.find({}, {sort: {date: -1}}).fetch();
+				var info = DailyCalories.find({}, {sort: {date: 1}}).fetch();
 				var barPadding = 1;
-				var w = 500;
+				var w = 200;
 				var h = 200;
 				
 				var updateBar = function(bar) {
