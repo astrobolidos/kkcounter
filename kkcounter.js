@@ -52,7 +52,12 @@ if (Meteor.isClient) {
 					.attr("y", function(d) { return h - (d.calories / 10); }) //Height minus data value
 					.attr("width", w / info.length - barPadding)
 					.attr("height", function(d) { return d.calories / 10; })	
-					.attr("fill", 'teal');					
+					.attr("fill", function(d) { 
+						var colour = 'gray';
+						if(d.calories > 1699) colour = 'green';
+						if(d.calories > 2100) colour = 'red'; 	
+						return colour;
+					});					
 				}
 
 				var bars =d3.select(self.node).select('.bars').selectAll('rect')
