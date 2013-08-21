@@ -11,6 +11,14 @@ if (Meteor.isClient) {
 
 				var info = parseValue(evt.target.value);
 				console.log('enter pressed:' + info.date);
+				$(evt.target).popover({
+					content: 'this is a popover!', 
+					placement: 'bottom',
+					trigger: 'manual',
+					delay: { show: 100, hide: 500 }
+				}).popover('show');
+
+				setTimeout(function(){ $(evt.target).popover('destroy'); }, 5000);
 			}
 		},
 	});
@@ -18,30 +26,6 @@ if (Meteor.isClient) {
 	Template.dailyReport.dailyCalories = function () {
 		return DailyCalories.find({}, {sort: {date: -1}});
 	};  
-
-	Template.dailyReport.formatDate = function() {
-		return 'formatDate';
-	};
-
-	Template.dailyReport.percent = function(calories) {
-		return Math.floor(calories / 2800 * 100);
-	};
-
-	Template.dailyReport.progressStyle = function(calories) {
-		return  calories > 2200 ? 'progress-danger' : (calories > 1950 ? 'progress-warning' : 'progress-success');
-	};
-
-	Template.dailyReport.events({
-		'click #add': function() {
-			console.log('click add');
-		},
-		
-		'keyup .calories': function(evt) {
-			if(evt.type === "keyup" && evt.which === 13 ) {
-				DailyCalories.update(this._id, { $set: {calories: Number(evt.target.value)}});
-			}
-		}
-	});
 
 	Template.graphs.destroyed = function() {
 		console.log('graphs.destroyed: ' + this.drawGraph);

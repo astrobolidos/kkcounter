@@ -2,3 +2,4 @@
 .bar { background: blue; width: 10px; float: left;}
 .container { padding-top: 11px; }
 #search { width: 65%; }
+li span { width: 100px; }

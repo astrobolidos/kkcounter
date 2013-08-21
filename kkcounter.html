@@ -21,13 +21,12 @@
 </template>
 
 <template name="dailyReport">
-  <h1>You've eaten:</h1>
+  <h3>You've eaten:</h3>
+  <ul>
     {{#each dailyCalories }}
-        {{date}} - 
-        <input class="calories" type="text" placeholder="How much?" value="{{calories}}"/>	
-        </br>
+        <li><span>{{date}}</span> - {{calories}}	        
     {{/each}}
-    
+  </ul>  
 	<p>{{#unless dailyCalories}} 
 	bla
 	{{/unless}}	
