@@ -2,6 +2,19 @@ DailyCalories = new Meteor.Collection('dailyCalories');
 //	Meteor.subcribe('dailyCalories');
 
 if (Meteor.isClient) {
+	Template.superbar.events({
+		'keyup #search': function(evt) {
+			if(evt.type === 'keyup' && evt.which === 13) {
+				var parseValue = function(value) {
+					return { 'calories': 0, 'quantity': 0, 'date': new Date() };	
+				}
+
+				var info = parseValue(evt.target.value);
+				console.log('enter pressed:' + info.date);
+			}
+		},
+	});
+
 	Template.dailyReport.dailyCalories = function () {
 		return DailyCalories.find({}, {sort: {date: -1}});
 	};  

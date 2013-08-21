@@ -4,9 +4,9 @@
 
 <body>
   <div class="container">
+    {{>superbar}}
     <div class="row-fluid">
       <div class="span6">
-      <!--Sidebar content-->
         {{>dailyReport }}
       </div>
       <div class="well span5">
@@ -15,6 +15,10 @@
     </div>
   </div>
 </body>
+
+<template name="superbar">
+  What did you did? &nbsp;&nbsp;<input id="search" type="text"/>
+</template>
 
 <template name="dailyReport">
   <h1>You've eaten:</h1>
@@ -39,6 +43,5 @@
         <g class="bars"></g>
         <g class="labels"></g>
       </svg>
-    {{/constant}}
-  
+    {{/constant}}  
 </template>
