@@ -6,16 +6,33 @@ if (Meteor.isClient) {
 		'keyup #search': function(evt) {
 			if(evt.type === 'keyup' && evt.which === 13) {
 				var parseValue = function(value) {
-					return { 'calories': 0, 'quantity': 0, 'date': new Date() };	
+					var info = { 'calories': 0, 'quantity': 0, 'date': moment().format('YYYYMMDD') };
+					if(/[\d.]*[\d]+[ ]*[c]*/i.test(value))
+						info.calories = Number($.trim(value.replace('c', '')))
+
+					return info	
 				}
 
+				var message = 'nothing happened!';
 				var info = parseValue(evt.target.value);
-				console.log('enter pressed:' + info.date);
+								console.log(info);
+				if(info.calories != 0) {
+					var daily = DailyCalories.findOne({date: info.date});
+					if(daily) {
+						DailyCalories.update(daily._id, {$inc: {calories: info.calories }});
+						message = 'calories updated to: ' + daily.calories;
+					} else {
+						DailyCalories.insert(info);
+						message = 'calories inserted for today! ' + info.calories;
+					}
+				}
+
+
 				$(evt.target).popover({
-					content: 'this is a popover!', 
+					content: message, 
 					placement: 'bottom',
 					trigger: 'manual',
-					delay: { show: 100, hide: 500 }
+					delay: { show: 100, hide: 500 },
 				}).popover('show');
 
 				setTimeout(function(){ $(evt.target).popover('destroy'); }, 5000);
