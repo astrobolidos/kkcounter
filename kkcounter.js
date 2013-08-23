@@ -8,6 +8,11 @@ if (Meteor.isClient) {
 				var parseValue = function(value) {
 					var info = { 'calories': 0, 'weight': 0, 'date': moment().format('YYYYMMDD') };
 					
+					if(/yesterday/.test(value)) {
+						info.date = moment().subtract('days', 1).format('YYYYMMDD');
+						value = value.replace('yesterday', '');
+					}
+
 					if(/[\d.]*[\d]+[ ]*[c]/i.test(value)) {
 						info.calories = Number($.trim(value.replace('c', '')))
 						return updateCalories(info);
@@ -41,7 +46,7 @@ if (Meteor.isClient) {
 					if(info.weight != 0) {
 						var daily = DailyCalories.findOne({date: info.date});
 						if(daily) {
-							DailyCalories.update(daily._id, {$set: {weight: info.calories }});
+							DailyCalories.update(daily._id, {$set: {weight: info.weight }});
 							message = 'weight updated to: ' + info.weight;
 						} else {
 							DailyCalories.insert(info);
