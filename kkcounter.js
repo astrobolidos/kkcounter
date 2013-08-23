@@ -101,6 +101,10 @@ if (Meteor.isClient) {
 						if(d.calories > 1699) colour = 'green';
 						if(d.calories > 2100) colour = 'red'; 	
 						return colour;
+					}).on('click', function(d,i) {
+						console.log(d + '-' + i);
+					}).on('mouseover', function(d, i){
+						console.log('mouseover' + d);
 					});					
 				}
 
