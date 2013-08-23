@@ -6,30 +6,55 @@ if (Meteor.isClient) {
 		'keyup #search': function(evt) {
 			if(evt.type === 'keyup' && evt.which === 13) {
 				var parseValue = function(value) {
-					var info = { 'calories': 0, 'quantity': 0, 'date': moment().format('YYYYMMDD') };
-					if(/[\d.]*[\d]+[ ]*[c]*/i.test(value))
+					var info = { 'calories': 0, 'weight': 0, 'date': moment().format('YYYYMMDD') };
+					
+					if(/[\d.]*[\d]+[ ]*[c]/i.test(value)) {
 						info.calories = Number($.trim(value.replace('c', '')))
+						return updateCalories(info);
+					}
 
-					return info	
-				}
-
-				var message = 'nothing happened!';
-				var info = parseValue(evt.target.value);
-								console.log(info);
-				if(info.calories != 0) {
-					var daily = DailyCalories.findOne({date: info.date});
-					if(daily) {
-						DailyCalories.update(daily._id, {$inc: {calories: info.calories }});
-						message = 'calories updated to: ' + daily.calories;
-					} else {
-						DailyCalories.insert(info);
-						message = 'calories inserted for today! ' + info.calories;
+					if(/[\d.]*[\d]+[ ]*[w]/i.test(value)) {
+						info.weight = Number($.trim(value.replace('w', '')))
+						return updateWeight(info);
 					}
 				}
 
+				var updateCalories = function(info) {
+					console.log(info);
+					var message;
+					if(info.calories != 0) {
+						var daily = DailyCalories.findOne({date: info.date});
+						if(daily) {
+							DailyCalories.update(daily._id, {$inc: {calories: info.calories }});
+							message = 'calories updated to: ' + daily.calories;
+						} else {
+							DailyCalories.insert(info);
+							message = 'calories inserted for today! ' + info.calories;
+						}
+					}
+					return message;					
+				}
+
+				var updateWeight = function(info) {
+					console.log(info);
+					var message;
+					if(info.weight != 0) {
+						var daily = DailyCalories.findOne({date: info.date});
+						if(daily) {
+							DailyCalories.update(daily._id, {$set: {weight: info.calories }});
+							message = 'weight updated to: ' + info.weight;
+						} else {
+							DailyCalories.insert(info);
+							message = 'weight inserted for today! ' + info.weight;
+						}
+					}
+					return message;						
+				}
+
+				var message = parseValue(evt.target.value);		
 
 				$(evt.target).popover({
-					content: message, 
+					content: message == null ? 'nothing happened!' : message, 
 					placement: 'bottom',
 					trigger: 'manual',
 					delay: { show: 100, hide: 500 },
