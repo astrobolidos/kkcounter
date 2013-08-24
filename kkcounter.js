@@ -79,6 +79,16 @@ if (Meteor.isClient) {
 		if(this.drawGraph) this.drawGraph.stop();
 	};
 
+	Template.graphs.events({
+		'mouseover rect': function(event, template) {
+			console.log(event.currentTarget);
+			$('#search')[0].value =event.currentTarget.attributes['data-calories'].value; 
+		},
+		'mousedown rect': function(event, template) {
+			console.log('mousedown ' + event.currentTarget.id);	
+		},	
+	});
+
 	Template.graphs.rendered = function() {
 		var self = this;
 		self.node = self.find("svg");
@@ -92,6 +102,7 @@ if (Meteor.isClient) {
 				
 				var updateBar = function(bar) {
 					bar.attr("id", function (d) { return d._id; })
+					.attr('data-calories', function(d) { return d.calories; })
 					.attr("x", function(d, i) { return i * (w / info.length); })//Bar width of 20 plus 1 for padding
 					.attr("y", function(d) { return h - (d.calories / 10); }) //Height minus data value
 					.attr("width", w / info.length - barPadding)
@@ -101,10 +112,6 @@ if (Meteor.isClient) {
 						if(d.calories > 1699) colour = 'green';
 						if(d.calories > 2100) colour = 'red'; 	
 						return colour;
-					}).on('click', function(d,i) {
-						console.log(d + '-' + i);
-					}).on('mouseover', function(d, i){
-						console.log('mouseover' + d);
 					});					
 				}
 
