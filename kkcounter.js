@@ -8,6 +8,12 @@ if (Meteor.isClient) {
 				var parseValue = function(value) {
 					var info = { 'calories': 0, 'weight': 0, 'date': moment().format('YYYYMMDD') };
 					
+					var dateMatch = value.match(/(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])$/);
+					if(dateMatch.length > 0 && moment(dateMatch[0], 'DD/MM').isValid()) {
+						info.date = moment(dateMatch[0] + '/' + moment().year(),'DD/MM/YYYY').format('YYYYMMDD');
+						value = value.replace(dateMatch[0], ''); 
+					} 
+
 					if(/yesterday/.test(value)) {
 						info.date = moment().subtract('days', 1).format('YYYYMMDD');
 						value = value.replace('yesterday', '');
@@ -30,8 +36,11 @@ if (Meteor.isClient) {
 					if(info.calories != 0) {
 						var daily = DailyCalories.findOne({date: info.date});
 						if(daily) {
-							DailyCalories.update(daily._id, {$inc: {calories: info.calories }});
-							message = 'calories updated to: ' + daily.calories;
+							DailyCalories.update(daily._id, {
+								$inc: { calories: info.calories },
+								$set: { date: info.date }
+							});
+							message = 'calories updated to: ' + daily.calories + ' for ' + moment(daily.date, 'YYYYMMDD').format('dddd');
 						} else {
 							DailyCalories.insert(info);
 							message = 'calories inserted for today! ' + info.calories;
@@ -46,8 +55,8 @@ if (Meteor.isClient) {
 					if(info.weight != 0) {
 						var daily = DailyCalories.findOne({date: info.date});
 						if(daily) {
-							DailyCalories.update(daily._id, {$set: {weight: info.weight }});
-							message = 'weight updated to: ' + info.weight;
+							DailyCalories.update(daily._id, {$set: {weight: info.weight, date: info.date }});
+							message = 'weight updated to: ' + info.weight + ' for ' + moment(daily.date, 'YYYYMMDD').format('dddd');
 						} else {
 							DailyCalories.insert(info);
 							message = 'weight inserted for today! ' + info.weight;
