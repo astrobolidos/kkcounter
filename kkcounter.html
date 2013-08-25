@@ -6,12 +6,15 @@
   <div class="container">
     {{>superbar}}
     <div class="row-fluid">
-      <div class="span6">
+      <div class="span3">
         {{>dailyReport }}
       </div>
-      <div class="well span5">
+      <div class="span4">
         {{>graphs}}
       </div>
+      <div class="span4">
+        {{>weightGraph}}
+      </div>      
     </div>
   </div>
 </body>
@@ -21,7 +24,7 @@
 </template>
 
 <template name="dailyReport">
-  <h3>You've eaten:</h3>
+  <h4>You've eaten:</h3>
   <ul>
     {{#each dailyCalories }}
         <li><span>{{date}}</span> - <span>{{calories}}</span> - <span>{{weight}}</span>       
@@ -36,11 +39,20 @@
 </template>
 
 <template name="graphs">
-  welcome to graphs template</br>
+  <h4>your calories intake!</h3>
     {{#constant}}
       <svg width="200" height="200">
         <g class="bars"></g>
         <g class="labels"></g>
       </svg>
     {{/constant}}  
+</template>
+
+<template name="weightGraph">
+  <h4>your weight!</h3>
+  {{#constant}}
+      <svg width="200" height="200">
+        <d class="area"></d>
+      </svg>    
+  {{/constant}}
 </template>

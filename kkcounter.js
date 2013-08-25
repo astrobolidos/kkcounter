@@ -39,7 +39,7 @@ if (Meteor.isClient) {
 						search.foodName = $.trim(value);
 
 						console.log(search);
-						return $.param(search)
+						return $.param(search	)
 					}
 				}
 
@@ -137,8 +137,10 @@ if (Meteor.isClient) {
 					});					
 				}
 
-				var bars =d3.select(self.node).select('.bars').selectAll('rect')
-					.data(info, function(i) { return i._id; });
+				var bars = d3.select(self.node)
+								.select('.bars')
+								.selectAll('rect')
+								.data(info, function(i) { return i._id; });
 					
 				updateBar(bars.enter().append('rect'));
 				updateBar(bars.transition().duration(250).ease("cubic-out"));
