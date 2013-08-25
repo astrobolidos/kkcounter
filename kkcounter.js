@@ -1,4 +1,5 @@
 DailyCalories = new Meteor.Collection('dailyCalories');
+Foods = new Meteor.Collection('foods');
 //	Meteor.subcribe('dailyCalories');
 
 if (Meteor.isClient) {
@@ -9,7 +10,7 @@ if (Meteor.isClient) {
 					var info = { 'calories': 0, 'weight': 0, 'date': moment().format('YYYYMMDD') };
 					
 					var dateMatch = value.match(/(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])$/);
-					if(dateMatch.length > 0 && moment(dateMatch[0], 'DD/MM').isValid()) {
+					if(dateMatch && dateMatch.length > 0 && moment(dateMatch[0], 'DD/MM').isValid()) {
 						info.date = moment(dateMatch[0] + '/' + moment().year(),'DD/MM/YYYY').format('YYYYMMDD');
 						value = value.replace(dateMatch[0], ''); 
 					} 
@@ -24,9 +25,21 @@ if (Meteor.isClient) {
 						return updateCalories(info);
 					}
 
-					if(/[\d.]*[\d]+[ ]*[w]/i.test(value)) {
-						info.weight = Number($.trim(value.replace('w', '')))
+					if(/[\d.]*[\d]+[ ]*[k]/i.test(value)) {
+						info.weight = Number($.trim(value.replace('k', '')))
 						return updateWeight(info);
+					}
+
+					if(/([\d]+[ ]*[g])[ ]*[\w]+/.test(value)) {
+						var search = { foodName: '', quantity: 0, caloriesPer100: 0 };
+						var quantityMatch = value.match(/[\d]+[ ]*[kg]/)[0];
+						search.quantity = Number($.trim(quantityMatch.replace('g', '')));
+
+						value = value.replace(quantityMatch, '');
+						search.foodName = $.trim(value);
+
+						console.log(search);
+						return $.param(search)
 					}
 				}
 
