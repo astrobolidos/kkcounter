@@ -9,7 +9,6 @@ if(Meteor.isClient) {
 	Template.weightGraph.rendered = function() {	
 		var self = this;
 		self.node = self.find("#svgArea");
-		var height = 200;
 
 		var margin = {top: 0, right: 0, bottom: 0, left: 0},
     	width = 200,
@@ -32,21 +31,13 @@ if(Meteor.isClient) {
 		    .orient("left");
 
 		var area = d3.svg.area()
-		    .x(function(d) { return x(d.d); })
+		    .x(function(d) { return x(d.date); })
 		    .y0(height)
-		    .y1(function(d) { return y(d.w); });
+		    .y1(function(d) { return y(d.weight); });
 
 		var svg = d3.select("#svgArea")
 		  	.append("g")
 		    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-		x.domain(d3.extent(data, function(d) { return d.d; }));
-		y.domain([105, d3.max(data, function(d) { return d.w; })]);
-
-		svg.append("path")
-			.datum(data)
-			.attr("class", "area")
-			.attr("d", area);
 
 		/*svg.append("g")
 			.attr("class", "x axis")
@@ -63,10 +54,21 @@ if(Meteor.isClient) {
 			.style("text-anchor", "end")
 			.text("Price ($)");*/
 
-		/*if(!self.drawGraph) {
+		if(!self.drawGraph) {
 			self.drawGraph = Deps.autorun(function(){
+				var info = DailyCalories.find({weight: {$exists: true }}, {sort: {date: 1}}).fetch();
 
+				x.domain(d3.extent(info, function(d) { return d.date; }));
+				y.domain([
+					d3.min(info, function(d) { return d.weight; }) - 0.3, 
+					d3.max(info, function(d) { return d.weight; })
+				]);
+
+				svg.append("path")
+					.datum(info)
+					.attr("class", "area")
+					.attr("d", area);
 			});
-		}*/
+		}
 	}	
 }
