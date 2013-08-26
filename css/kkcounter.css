@@ -3,3 +3,14 @@
 .container { padding-top: 11px; }
 #search { width: 65%; }
 li span { width: 100px; }
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.area {
+  fill: steelblue;
+}
