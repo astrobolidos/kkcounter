@@ -21,6 +21,15 @@
 
 <template name="superbar">
   What did you did? &nbsp;&nbsp;<input id="search" type="text"/>
+  {{>autocomplete}}
+</template>
+
+<template name="autocomplete">
+  <ul>
+  {{#each foods }}
+    <li>{{name}}
+  {{/each}}
+  </ul>
 </template>
 
 <template name="dailyReport">

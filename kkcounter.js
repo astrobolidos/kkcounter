@@ -3,6 +3,10 @@ Foods = new Meteor.Collection('foods');
 //	Meteor.subcribe('dailyCalories');
 
 if (Meteor.isClient) {	
+	Template.autocomplete.foods = function() {
+		return Foods.find({},{});
+	}
+
 	Template.superbar.events({
 		'keyup #search': function(evt) {
 			if(evt.type === 'keyup' && evt.which === 13) {
@@ -64,6 +68,22 @@ if (Meteor.isClient) {
 			console.log(search);
 			return $.param(search)
 		}
+
+		if(value) {
+			showFoods(target, value);
+		}
+	}
+
+	showFoods = function(target, value) {
+		console.log(target);
+		console.log(value);
+
+		if(!self.updateFoods) {
+			self.updateFoods = Deps.autorun(function(){
+				Foods.find({'name': /value/}, {}).fetch();
+			})
+		}
+
 	}
 
 	updateCalories = function(info) {
