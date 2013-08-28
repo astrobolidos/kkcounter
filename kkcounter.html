@@ -10,7 +10,7 @@
         {{>dailyReport }}
       </div>
       <div class="span4">
-        {{>graphs}}
+        {{>calorieGraph}}
       </div>
       <div class="span4">
         {{>weightGraph}}
@@ -38,7 +38,7 @@
   <input id="add" type="button" value="Add" />
 </template>
 
-<template name="graphs">
+<template name="calorieGraph">
   <h4>your calories intake!</h3>
     {{#constant}}
       <svg width="200" height="200">

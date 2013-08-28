@@ -1,10 +1,3 @@
-var data = [
-	{ w: 106.7, d: '20130803' },
-	{ w: 106.5, d: '20130804' },
-	{ w: 106.0, d: '20130805' },	
-	{ w: 105.8, d: '20130806' },	
-];
-
 if(Meteor.isClient) {
 	Template.weightGraph.rendered = function() {	
 		var self = this;
@@ -24,11 +17,11 @@ if(Meteor.isClient) {
 
 		var xAxis = d3.svg.axis()
 		    .scale(x)
-		    .orient("bottom");
+		    .orient("top");
 
 		var yAxis = d3.svg.axis()
 		    .scale(y)
-		    .orient("left");
+		    .orient("right");
 
 		var area = d3.svg.area()
 		    .x(function(d) { return x(d.date); })
@@ -38,21 +31,6 @@ if(Meteor.isClient) {
 		var svg = d3.select("#svgArea")
 		  	.append("g")
 		    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-		/*svg.append("g")
-			.attr("class", "x axis")
-			.attr("transform", "translate(0," + height + ")")
-			.call(xAxis);
-
-		svg.append("g")
-			.attr("class", "y axis")
-			.call(yAxis)
-			.append("text")
-			.attr("transform", "rotate(-90)")
-			.attr("y", 6)
-			.attr("dy", ".71em")
-			.style("text-anchor", "end")
-			.text("Price ($)");*/
 
 		if(!self.drawGraph) {
 			self.drawGraph = Deps.autorun(function(){
@@ -68,7 +46,22 @@ if(Meteor.isClient) {
 					.datum(info)
 					.attr("class", "area")
 					.attr("d", area);
-			});
+			
+				svg.append("g")
+					.attr("class", "x axis")
+					.attr("transform", "translate(0," + height + ")")
+					.call(xAxis);
+
+				svg.append("g")
+					.attr("class", "y axis")
+					.call(yAxis)
+					.append("text")
+					//.attr("transform", "rotate(-90)")
+					.attr("y", 6)
+					.attr("dy", ".71em")
+					.style("text-anchor", "left")
+					.text("Weight");
+					});
 		}
 	}	
 }
