@@ -6,18 +6,7 @@ if (Meteor.isClient) {
 	Template.superbar.events({
 		'keyup #search': function(evt) {
 			if(evt.type === 'keyup' && evt.which === 13) {
-				
-
-				var message = parseValue(evt.target.value);		
-
-				$(evt.target).popover({
-					content: message == null ? 'nothing happened!' : message, 
-					placement: 'bottom',
-					trigger: 'manual',
-					delay: { show: 100, hide: 500 },
-				}).popover('show');
-
-				setTimeout(function(){ $(evt.target).popover('destroy'); }, 5000);
+				showPopupMessage(parseValue(evt.target));		
 			}
 		},
 	});
@@ -26,7 +15,21 @@ if (Meteor.isClient) {
 		return DailyCalories.find({}, {sort: {date: -1}});
 	};  
 
-	parseValue = function(value) {
+	showPopupMessage = function(target, message) {
+		if(target && message && message.length > 0) {
+			$(target).popover({
+				content: message == null ? 'nothing happened!' : message, 
+				placement: 'bottom',
+				trigger: 'manual',
+				delay: { show: 100, hide: 500 },
+			}).popover('show');
+
+			setTimeout(function(){ $(target).popover('destroy'); }, 5000);
+		}
+	}
+
+	parseValue = function(target) {
+		var value = target.value;
 		var info = { 'calories': 0, 'weight': 0, 'date': moment().format('YYYYMMDD') };
 		
 		var dateMatch = value.match(/(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])$/);
@@ -59,7 +62,7 @@ if (Meteor.isClient) {
 			search.foodName = $.trim(value);
 
 			console.log(search);
-			return $.param(search	)
+			return $.param(search)
 		}
 	}
 
