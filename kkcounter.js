@@ -4,7 +4,7 @@ Foods = new Meteor.Collection('foods');
 
 if (Meteor.isClient) {	
 	Template.autocomplete.foods = function() {
-		return Foods.find({},{});
+		return Foods.find({'name': {$regex: Session.get('foodName') }});
 	}
 
 	Template.superbar.events({
@@ -78,12 +78,15 @@ if (Meteor.isClient) {
 		console.log(target);
 		console.log(value);
 
-		if(!self.updateFoods) {
-			self.updateFoods = Deps.autorun(function(){
-				Foods.find({'name': /value/}, {}).fetch();
-			})
-		}
+		Session.set('foodName', value);
 
+		$(target).popover({
+			content: Meteor.render(Template.autocomplete), 
+			html: true,
+			placement: 'bottom',
+			trigger: 'manual',
+			delay: { show: 100, hide: 500 },
+		}).popover('show');
 	}
 
 	updateCalories = function(info) {
