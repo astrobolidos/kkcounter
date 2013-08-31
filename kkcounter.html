@@ -21,14 +21,16 @@
 
 <template name="superbar">
   What did you did? &nbsp;&nbsp;<input id="search" type="text"/>
-  {{>autocomplete}}
 </template>
 
 <template name="autocomplete">
   <ul>
   {{#each foods }}
-    <li>{{name}}
+    <li>{{name}}</li>
   {{/each}}
+  {{#unless foods}}
+    <li>no food found on the archives!</li>
+  {{/unless}}
   </ul>
 </template>
 

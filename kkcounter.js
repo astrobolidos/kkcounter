@@ -7,6 +7,10 @@ if (Meteor.isClient) {
 		return Foods.find({'name': {$regex: Session.get('foodName') }});
 	}
 
+	Template.autocomplete.preserve({
+		'.popover': function(node) { return node.id; }
+	});
+
 	Template.superbar.events({
 		'keyup #search': function(evt) {
 			if(evt.type === 'keyup' && evt.which === 13) {
@@ -80,13 +84,15 @@ if (Meteor.isClient) {
 
 		Session.set('foodName', value);
 
-		$(target).popover({
-			content: Meteor.render(Template.autocomplete), 
-			html: true,
-			placement: 'bottom',
-			trigger: 'manual',
-			delay: { show: 100, hide: 500 },
-		}).popover('show');
+		if(!$(target).next('div.popover:visible').length){
+			$(target).popover({
+				content: Meteor.render(Template.autocomplete), 
+				html: true,
+				placement: 'bottom',
+				trigger: 'manual',
+				delay: { show: 100, hide: 500 },
+			}).popover('show');
+		}
 	}
 
 	updateCalories = function(info) {
