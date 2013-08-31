@@ -26,7 +26,10 @@
 <template name="autocomplete">
   <ul>
   {{#each foods }}
-    <li>{{name}}</li>
+    <li>
+      {{name}} = {{cph}}
+      <input id="food" class="food" />
+    </li>
   {{/each}}
   {{#unless foods}}
     <li>no food found on the archives!</li>

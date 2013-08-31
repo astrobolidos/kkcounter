@@ -5,16 +5,30 @@ Foods = new Meteor.Collection('foods');
 if (Meteor.isClient) {	
 	Template.autocomplete.foods = function() {
 		return Foods.find({'name': {$regex: Session.get('foodName') }});
-	}
-
+	};
+	
 	Template.autocomplete.preserve({
 		'.popover': function(node) { return node.id; }
+	});
+
+	Template.autocomplete.rendered = function() {
+		this.find('.food:first-child').focus();
+	};
+	
+	Template.autocomplete.events({
+		'keyup #food': function(evt) {
+			console.log(evt.type);
+			console.log(evt.which);
+			/*if(evt.type === 'keyup' && evt.which === 13) {
+				console.log(evt.target.value);
+			}*/
+		},
 	});
 
 	Template.superbar.events({
 		'keyup #search': function(evt) {
 			if(evt.type === 'keyup' && evt.which === 13) {
-				showPopupMessage(parseValue(evt.target));		
+				showPopupMessage(evt.target, parseValue(evt.target), 5000);		
 			}
 		},
 	});
@@ -23,7 +37,7 @@ if (Meteor.isClient) {
 		return DailyCalories.find({}, {sort: {date: -1}});
 	};  
 
-	showPopupMessage = function(target, message) {
+	showPopupMessage = function(target, message, timeout) {
 		if(target && message && message.length > 0) {
 			$(target).popover({
 				content: message == null ? 'nothing happened!' : message, 
@@ -32,7 +46,7 @@ if (Meteor.isClient) {
 				delay: { show: 100, hide: 500 },
 			}).popover('show');
 
-			setTimeout(function(){ $(target).popover('destroy'); }, 5000);
+			setTimeout(function(){ $(target).popover('destroy'); }, timeout);
 		}
 	}
 
@@ -92,6 +106,8 @@ if (Meteor.isClient) {
 				trigger: 'manual',
 				delay: { show: 100, hide: 500 },
 			}).popover('show');
+		
+			setTimeout(function(){ $(target).popover('destroy'); }, 15000);
 		}
 	}
 
