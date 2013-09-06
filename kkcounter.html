@@ -55,9 +55,9 @@
 <template name="calorieGraph">
   <h4>your calories intake!</h4>
     {{#constant}}
-      <svg width="900" height="100">
+    {{touch}}
+      <svg>
         <g class="bars"></g>
-        <g class="labels"></g>
       </svg>
     {{/constant}}  
 </template>
@@ -65,6 +65,6 @@
 <template name="weightGraph">
   <h4>your weight!</h4>
   {{#constant}}
-    <svg id="svgArea" width="900" height="100" ></svg>    
+    <svg id="svgArea"></svg>    
   {{/constant}}
 </template>

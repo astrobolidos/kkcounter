@@ -9,22 +9,31 @@ if(Meteor.isClient) {
 		},	
 	});
 
+	Template.calorieGraph.touch = function() {
+		return Session.get("touch"); // raised on the windows resize, also causes the renfered to be called.
+	};
+
 	Template.calorieGraph.destroyed = function() {
 		console.log('graphs.destroyed: ' + this.drawGraph);
 		if(this.drawGraph) this.drawGraph.stop();
 	};
 
 	Template.calorieGraph.rendered = function() {
+		console.log('rendered');
+
 		var self = this;
 		self.node = self.find("svg");
+		d3.select(self.node)
+			.attr('width', this.firstNode.clientWidth || 100)
+			.transition().attr('width', this.firstNode.clientWidth || 100);
+		var w = this.firstNode.clientWidth || 100;
+		var h = 100;
 
 		if(!self.drawGraph) {
 			self.drawGraph = Deps.autorun(function(){
 				var info = DailyCalories.find({}, {sort: {date: 1}}).fetch();
 				var barPadding = 1;
-				var w = 900;
-				var h = 100;
-				
+
 				var updateBar = function(bar) {
 					bar.attr("id", function (d) { return d._id; })
 					.attr('data-calories', function(d) { return d.calories; })

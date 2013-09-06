@@ -3,6 +3,12 @@ Foods = new Meteor.Collection('foods');
 //	Meteor.subcribe('dailyCalories');
 
 if (Meteor.isClient) {	
+	Meteor.startup(function () {
+		$(window).resize(function(evt) {
+			Session.set("touch", new Date());
+		});   
+	});
+
 	Template.autocomplete.foods = function() {
 		return Foods.find({'name': {$regex: Session.get('foodName') }});
 	};
@@ -147,8 +153,7 @@ if (Meteor.isClient) {
 	}		
 }
 
+
 if (Meteor.isServer) {
-  Meteor.startup(function () {
-    
-  });
+
 }
