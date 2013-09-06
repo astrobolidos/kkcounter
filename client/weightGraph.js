@@ -1,19 +1,19 @@
 if(Meteor.isClient) {
 	Template.weightGraph.rendered = function() {	
 		var self = this;
+		console.log(self.parent);
+
 		self.node = self.find("#svgArea");
 
 		var margin = {top: 0, right: 0, bottom: 0, left: 0},
-    	width = 200,
-    	height = 200;
+    	width = 900,
+    	height = 100;
 
 		var parseDate = d3.time.format("%Y%m%d").parse;
 
-		var x = d3.time.scale()
-		    .range([0, width]);
+		var x = d3.time.scale().range([0, width]);
 
-		var y = d3.scale.linear()
-		    .range([height, 0]);
+		var y = d3.scale.linear().range([height, 0]);
 
 		var xAxis = d3.svg.axis()
 		    .scale(x)
@@ -24,7 +24,7 @@ if(Meteor.isClient) {
 		    .orient("right");
 
 		var area = d3.svg.area()
-		    .x(function(d) { return x(d.date); })
+		    .x(function(d) { return x(parseDate(d.date)); })
 		    .y0(height)
 		    .y1(function(d) { return y(d.weight); });
 
@@ -36,7 +36,7 @@ if(Meteor.isClient) {
 			self.drawGraph = Deps.autorun(function(){
 				var info = DailyCalories.find({weight: {$exists: true }}, {sort: {date: 1}}).fetch();
 
-				x.domain(d3.extent(info, function(d) { return d.date; }));
+				x.domain(d3.extent(info, function(d) { return parseDate(d.date); }));
 				y.domain([
 					d3.min(info, function(d) { return d.weight; }) - 0.3, 
 					d3.max(info, function(d) { return d.weight; })
@@ -50,7 +50,7 @@ if(Meteor.isClient) {
 				svg.append("g")
 					.attr("class", "x axis")
 					.attr("transform", "translate(0," + height + ")")
-					.call(xAxis);
+					.call(xAxis)
 
 				svg.append("g")
 					.attr("class", "y axis")

@@ -6,15 +6,15 @@
   <div class="container">
     {{>superbar}}
     <div class="row-fluid">
+      <div class="span12 well">
+        {{>weightGraph}}
+      </div>        
       <div class="span3">
         {{>dailyReport }}
       </div>
       <div class="span4">
         {{>calorieGraph}}
-      </div>
-      <div class="span4">
-        {{>weightGraph}}
-      </div>      
+      </div>    
     </div>
   </div>
 </body>
@@ -65,7 +65,7 @@
 <template name="weightGraph">
   <h4>your weight!</h3>
   {{#constant}}
-      <svg id="svgArea" width="200" height="200">
+      <svg id="svgArea" width="900" height="200" >
       </svg>    
   {{/constant}}
 </template>
