@@ -9,11 +9,11 @@
       <div class="span12 well">
         {{>weightGraph}}
       </div>        
-      <div class="span3">
-        {{>dailyReport }}
+      <div class="span12 well" style="margin-left: 0px;">
+        {{>calorieGraph}}
       </div>
       <div class="span4">
-        {{>calorieGraph}}
+        {{>dailyReport }}
       </div>    
     </div>
   </div>
@@ -53,9 +53,9 @@
 </template>
 
 <template name="calorieGraph">
-  <h4>your calories intake!</h3>
+  <h4>your calories intake!</h4>
     {{#constant}}
-      <svg width="200" height="200">
+      <svg width="900" height="100">
         <g class="bars"></g>
         <g class="labels"></g>
       </svg>
@@ -63,9 +63,8 @@
 </template>
 
 <template name="weightGraph">
-  <h4>your weight!</h3>
+  <h4>your weight!</h4>
   {{#constant}}
-      <svg id="svgArea" width="900" height="200" >
-      </svg>    
+    <svg id="svgArea" width="900" height="100" ></svg>    
   {{/constant}}
 </template>
