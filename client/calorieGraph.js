@@ -27,6 +27,9 @@ if(Meteor.isClient) {
 		var w = this.firstNode.clientWidth || 100;
 		var h = 100;
 
+		if(this.firstNode.clientWidth != self.node.width)
+			console.log(self.node.width);
+
 		if(!self.drawGraph) {
 			self.drawGraph = Deps.autorun(function(){
 				console.log('deps');

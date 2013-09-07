@@ -1,12 +1,17 @@
 if(Meteor.isClient) {
+	Template.weightGraph.touch = function() {
+		return Session.get("touch"); // raised on the windows resize, also causes the renfered to be called.
+	};	
+
 	Template.weightGraph.rendered = function() {	
 		var self = this;
 		console.log(self.parent);
 
 		self.node = self.find("#svgArea");
+		d3.select(self.node).attr('width', this.firstNode.clientWidth || 100);
 
 		var margin = {top: 0, right: 0, bottom: 0, left: 0},
-    	width = 900,
+    	width = this.firstNode.clientWidth || 100;
     	height = 100;
 
 		var parseDate = d3.time.format("%Y%m%d").parse;
