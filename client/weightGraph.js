@@ -1,53 +1,48 @@
 if(Meteor.isClient) {
-	Template.weightGraph.touch = function() {
-		return Session.get("touch"); // raised on the windows resize, also causes the renfered to be called.
-	};	
-
 	Template.weightGraph.rendered = function() {	
 		var self = this;
 		console.log(self.parent);
-
 		self.node = self.find("#svgArea");
-		d3.select(self.node).attr('width', this.firstNode.clientWidth || 100);
-
-		var margin = {top: 0, right: 0, bottom: 0, left: 0},
-    	width = this.firstNode.clientWidth || 100;
-    	height = 100;
-
-		var parseDate = d3.time.format("%Y%m%d").parse;
-
-		var x = d3.time.scale().range([0, width]);
-
-		var y = d3.scale.linear().range([height, 0]);
-
-		var xAxis = d3.svg.axis()
-		    .scale(x)
-		    .orient("top");
-
-		var yAxis = d3.svg.axis()
-		    .scale(y)
-		    .orient("right");
-
-		var area = d3.svg.area()
-		    .x(function(d) { return x(parseDate(d.date)); })
-		    .y0(height)
-		    .y1(function(d) { return y(d.weight); });
-
-		var svg = d3.select("#svgArea")
-		  	.append("g")
-		    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 		if(!self.drawGraph) {
 			self.drawGraph = Deps.autorun(function(){
+				console.log('deps weight');
+				Session.get('touch'); // reactive to windows resize
+
 				var info = DailyCalories.find({weight: {$exists: true }}, {sort: {date: 1}}).fetch();
 
-				x.domain(d3.extent(info, function(d) { return parseDate(d.date); }));
+				var margin = {top: 0, right: 0, bottom: 0, left: 0},
+		    	width = self.firstNode.clientWidth;
+		    	height = 100;
+
+				var parseDate = d3.time.format("%Y%m%d").parse;
+
+				var x = d3.time.scale().range([0, width]);
+				x.domain(d3.extent(info, function(d) { return parseDate(d.date); }));			
+				var xAxis = d3.svg.axis()
+				    .scale(x)
+				    .orient("top");
+				
+				var y = d3.scale.linear().range([height, 0]);
 				y.domain([
 					d3.min(info, function(d) { return d.weight; }) - 0.3, 
 					d3.max(info, function(d) { return d.weight; })
-				]);
+				]);				
+				var yAxis = d3.svg.axis()
+				    .scale(y)
+				    .orient("right");
 
-				svg.append("path")
+				var area = d3.svg.area()
+				    .x(function(d) { return x(parseDate(d.date)); })
+				    .y0(height)
+				    .y1(function(d) { return y(d.weight); });
+
+				var svg = d3.select("#svgArea")
+				  	.append("g")
+				    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+				
+				d3.select(self.node).attr('width', width);
+				var area = svg.append("path")
 					.datum(info)
 					.attr("class", "area")
 					.attr("d", area);
@@ -66,7 +61,7 @@ if(Meteor.isClient) {
 					.attr("dy", ".71em")
 					.style("text-anchor", "left")
 					.text("Weight");
-					});
+			});
 		}
 	}	
 }

@@ -10,7 +10,7 @@ if(Meteor.isClient) {
 	});
 
 	Template.calorieGraph.touch = function() {
-		return Session.get("touch"); // raised on the windows resize, also causes the renfered to be called.
+		//return Session.get("touch"); // raised on the windows resize, also causes the renfered to be called.
 	};
 
 	Template.calorieGraph.destroyed = function() {
@@ -19,23 +19,16 @@ if(Meteor.isClient) {
 	};
 
 	Template.calorieGraph.rendered = function() {
-		console.log('rendered');
-
 		var self = this;
 		self.node = self.find("svg");
-		d3.select(self.node).attr('width', this.firstNode.clientWidth || 100);
-		var w = this.firstNode.clientWidth || 100;
-		var h = 100;
-
-		if(this.firstNode.clientWidth != self.node.width)
-			console.log(self.node.width);
+		var h = 100;	
 
 		if(!self.drawGraph) {
 			self.drawGraph = Deps.autorun(function(){
-				console.log('deps');
 				var info = DailyCalories.find({}, {sort: {date: 1}}).fetch();
 				var barPadding = 1;
 
+				Session.get('touch');
 				var updateBar = function(bar) {
 					bar.attr("id", function (d) { return d._id; })
 					.attr('data-calories', function(d) { return d.calories; })
@@ -51,7 +44,8 @@ if(Meteor.isClient) {
 					});					
 				}
 
-				
+				var w = self.firstNode.clientWidth || 100;
+				d3.select(self.node).attr('width', w || 100);
 				var bars = d3.select(self.node)
 								.select('.bars')
 								.selectAll('rect')
