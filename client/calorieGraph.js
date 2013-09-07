@@ -23,14 +23,13 @@ if(Meteor.isClient) {
 
 		var self = this;
 		self.node = self.find("svg");
-		d3.select(self.node)
-			.attr('width', this.firstNode.clientWidth || 100)
-			.transition().attr('width', this.firstNode.clientWidth || 100);
+		d3.select(self.node).attr('width', this.firstNode.clientWidth || 100);
 		var w = this.firstNode.clientWidth || 100;
 		var h = 100;
 
 		if(!self.drawGraph) {
 			self.drawGraph = Deps.autorun(function(){
+				console.log('deps');
 				var info = DailyCalories.find({}, {sort: {date: 1}}).fetch();
 				var barPadding = 1;
 
@@ -49,6 +48,7 @@ if(Meteor.isClient) {
 					});					
 				}
 
+				
 				var bars = d3.select(self.node)
 								.select('.bars')
 								.selectAll('rect')
