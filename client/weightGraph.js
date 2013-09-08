@@ -6,7 +6,6 @@ if(Meteor.isClient) {
 
 		if(!self.drawGraph) {
 			self.drawGraph = Deps.autorun(function(){
-				console.log('deps weight');
 				Session.get('touch'); // reactive to windows resize
 
 				var info = DailyCalories.find({weight: {$exists: true }}, {sort: {date: 1}}).fetch();

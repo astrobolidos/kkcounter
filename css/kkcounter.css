@@ -15,6 +15,6 @@ li span { width: 100px; }
   fill: steelblue;
 }
 
-div .span12 { height: 180px; padding-bottom: 0px; }
+.graph { height: 160px; padding: 10px; margin-left: 0px; }
 h4 { margin-top: 0px; }
 

@@ -1,17 +1,13 @@
 if(Meteor.isClient) {
 	Template.calorieGraph.events({
 		'mouseover rect': function(event, template) {
-			console.log(event.currentTarget);
-			$('#search')[0].value =event.currentTarget.attributes['data-calories'].value; 
+			//console.log(event.currentTarget);
+			//$('#search')[0].value =event.currentTarget.attributes['data-calories'].value; 
 		},
 		'mousedown rect': function(event, template) {
 			console.log('mousedown ' + event.currentTarget.id);	
 		},	
 	});
-
-	Template.calorieGraph.touch = function() {
-		//return Session.get("touch"); // raised on the windows resize, also causes the renfered to be called.
-	};
 
 	Template.calorieGraph.destroyed = function() {
 		console.log('graphs.destroyed: ' + this.drawGraph);

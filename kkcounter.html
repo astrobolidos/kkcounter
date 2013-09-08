@@ -6,15 +6,15 @@
   <div class="container">
     {{>superbar}}
     <div class="row-fluid">
-      <div class="span12 well">
+      <div class="span4 well" style="min-height:200px;">
+        {{>dailyReport }}
+      </div>        
+      <div class="span8 well graph">
         {{>weightGraph}}
       </div>        
-      <div class="span12 well" style="margin-left: 0px;">
+      <div class="span8 well graph">
         {{>calorieGraph}}
       </div>
-      <div class="span4">
-        {{>dailyReport }}
-      </div>    
     </div>
   </div>
 </body>

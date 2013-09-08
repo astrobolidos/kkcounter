@@ -36,6 +36,10 @@ if (Meteor.isClient) {
 			if(evt.type === 'keyup' && evt.which === 13) {
 				showPopupMessage(evt.target, parseValue(evt.target), 5000);		
 			}
+
+			if(evt.target.value && evt.target.value.length > 1) {
+				showFoods(evt.target, evt.target.value);
+			}			
 		},
 	});
 
@@ -91,10 +95,6 @@ if (Meteor.isClient) {
 
 			console.log(search);
 			return $.param(search)
-		}
-
-		if(value) {
-			showFoods(target, value);
 		}
 	}
 
