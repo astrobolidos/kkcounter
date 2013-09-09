@@ -18,3 +18,12 @@ li span { width: 100px; }
 .graph { height: 160px; padding: 10px; margin-left: 0px; }
 h4 { margin-top: 0px; }
 
+ul { margin-left: 0px;}
+li { list-style-type: none; width: 180px; height: 60px; }
+.calories { font-size: 2.5em; width: 178px; 
+	text-align:justify; 
+	display: inline-block; 
+	width: 108px; height: 30px; 
+	vertical-align: text-bottom; 
+	text-align: right;}
+li span { float: left; display: inline-block; width: 70px; height: 15px; margin-bottom: 3px; vertical-align: text-top; }

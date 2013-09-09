@@ -36,30 +36,36 @@ if(Meteor.isClient) {
 				    .y0(height)
 				    .y1(function(d) { return y(d.weight); });
 
-				var svg = d3.select("#svgArea")
-				  	.append("g")
-				    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-				
-				d3.select(self.node).attr('width', width);
-				var area = svg.append("path")
-					.datum(info)
-					.attr("class", "area")
-					.attr("d", area);
-			
-				svg.append("g")
-					.attr("class", "x axis")
-					.attr("transform", "translate(0," + height + ")")
-					.call(xAxis)
+				var svg = d3.select("#weightGraph")
+					.attr('class', 'area')
+					.attr('width', width);
 
-				svg.append("g")
-					.attr("class", "y axis")
-					.call(yAxis)
-					.append("text")
-					//.attr("transform", "rotate(-90)")
-					.attr("y", 6)
-					.attr("dy", ".71em")
-					.style("text-anchor", "left")
-					.text("Weight");
+				svg.append('path')
+					.datum(info)
+					.attr("d", area);
+				  	//.append("g")
+				    //.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+				
+				// d3.select(self.node).attr('width', width);
+				// var area = svg.append("path")
+				// 	.datum(info)
+				// 	.attr("class", "area")
+				// 	.attr("d", area);
+			
+				// svg.append("g")
+				// 	.attr("class", "x axis")
+				// 	.attr("transform", "translate(0," + height + ")")
+				// 	.call(xAxis)
+
+				// svg.append("g")
+				// 	.attr("class", "y axis")
+				// 	.call(yAxis)
+				// 	.append("text")
+				// 	//.attr("transform", "rotate(-90)")
+				// 	.attr("y", 6)
+				// 	.attr("dy", ".71em")
+				// 	.style("text-anchor", "left")
+				// 	.text("Weight");
 			});
 		}
 	}	

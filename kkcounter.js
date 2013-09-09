@@ -47,6 +47,23 @@ if (Meteor.isClient) {
 		return DailyCalories.find({}, {sort: {date: -1}});
 	};  
 
+	Template.dailyReport.preattyDate = function(date) {
+		moment.lang('en', {
+		    calendar : {
+		        lastDay : '[Yesterday]',
+		        sameDay : '[Today]',
+		        nextDay : '[Tomorrow]',
+		        lastWeek : '[last] dddd',
+		        nextWeek : 'dddd',
+		        sameElse : 'L'
+		    }
+		});		
+
+		var now = moment();
+		var date = moment(date, 'YYYYMMDD');
+		return date.calendar();
+	}
+
 	showPopupMessage = function(target, message, timeout) {
 		if(target && message && message.length > 0) {
 			$(target).popover({

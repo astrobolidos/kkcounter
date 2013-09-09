@@ -41,7 +41,9 @@
   <h4>You've eaten:</h3>
   <ul>
     {{#each dailyCalories }}
-        <li><span>{{date}}</span> - <span>{{calories}}</span> - <span>{{weight}}</span>       
+        <li>
+          <span class="calories">{{calories}}</span>
+          <span>{{preattyDate date}}</span><span>{{weight}}</span>       
     {{/each}}
   </ul>  
 	<p>{{#unless dailyCalories}} 
@@ -66,6 +68,6 @@
   <h4>your weight!</h4>
   {{#constant}}
     {{touch}}
-    <svg id="svgArea"></svg>    
+    <svg id="weightGraph"></svg>    
   {{/constant}}
 </template>
